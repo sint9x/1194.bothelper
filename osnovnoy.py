@@ -23,12 +23,30 @@ first_aid_instructions = {
 
     "ожог": """Оказание помощи при ожоге:
 
+Выберите тип ожога:""",
+
+    "термический ожог": """Оказание помощи при термическом ожоге:
+
 1. Охладите место ожога проточной водой 15-20 минут
 2. Накройте стерильной повязкой
 3. Дайте обезболивающее при необходимости
 4. Вызовите скорую при глубоких ожогах
 
-❗️ Не используйте масло, лед или вату!""",
+❗️ Не используйте масло, лед или вату!
+❗️ Не срывайте прилипшую одежду!
+❗️ При ожогах 3-4 степени немедленно вызывайте скорую!""",
+
+    "химический ожог": """Оказание помощи при химическом ожоге:
+
+1. Снимите пропитанную химикатами одежду
+2. Промывайте рану проточной водой 20-30 минут
+3. Нейтрализуйте химикат (если известно вещество)
+4. Наложите стерильную повязку
+5. Вызовите скорую
+
+❗️ При ожогах кислотами не используйте щелочи!
+❗️ При ожогах щелочами не используйте кислоты!
+❗️ При ожогах негашеной известью НЕ промывайте водой!""",
 
     "кровотечение": """Оказание помощи при кровотечении:
 
@@ -42,7 +60,7 @@ first_aid_instructions = {
     "удушье": """Оказание помощи при удушье:
 
 1. Попросите человека покашлять
-2. Выполните прием Геймлиха (резкие толчки в живот)
+2. Выполните прием Геймлиха (резкие толчки в животе)
 3. Если человек без сознания - начинайте СЛР
 4. Вызовите скорую
 
@@ -50,12 +68,13 @@ first_aid_instructions = {
 
     "отравление": """Оказание помощи при отравлении:
 
-1. Вызовите рвоту (если человек в сознании)
+1. Вызовите рвоту (если человек в сознании и не отравлен кислотой/щелочью)
 2. Дайте активированный уголь
 3. Обеспечьте обильное питье
 4. Вызовите скорую
 
-❗️ Сохраните образец отравляющего вещества!""",
+❗️ Сохраните образец отравляющего вещества!
+❗️ При отравлении кислотами/щелочами НЕ вызывайте рвоту!""",
 
     "обморок": """Оказание помощи при обмороке:
 
@@ -69,18 +88,30 @@ first_aid_instructions = {
 }
 
 
-@bot.message_handler(commands=['start'])
-async def send_welcome(message):
+# Создаем основную клавиатуру
+def get_main_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-
     buttons = [
         'Перелом', 'Ожог', 'Кровотечение',
         'Удушье', 'Отравление', 'Обморок',
         'ℹ️ О боте'
     ]
-
     markup.add(*buttons)
+    return markup
 
+
+# Создаем клавиатуру для выбора типа ожога
+def get_burn_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('🔥 Термический ожог')
+    btn2 = types.KeyboardButton('🧪 Химический ожог')
+    btn3 = types.KeyboardButton('🔙 Назад')
+    markup.add(btn1, btn2, btn3)
+    return markup
+
+
+@bot.message_handler(commands=['start'])
+async def send_welcome(message):
     welcome_text = """
 🚑 <b>Бот первой помощи</b>
 
@@ -91,25 +122,44 @@ async def send_welcome(message):
 <b>ВАЖНО:</b> При серьезных травмах обязательно вызывайте скорую помощь!
     """
 
-    await bot.send_message(message.chat.id, welcome_text, parse_mode='HTML', reply_markup=markup)
+    await bot.send_message(message.chat.id, welcome_text, parse_mode='HTML', reply_markup=get_main_keyboard())
 
 
 @bot.message_handler(func=lambda message: True)
 async def handle_buttons(message):
     text = message.text
 
-    if text == 'Перелом':
-        await bot.send_message(message.chat.id, first_aid_instructions["перелом"])
-    elif text == 'Ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["ожог"])
+    # Проверяем, находимся ли мы в режиме выбора типа ожога
+    if text == 'Ожог':
+        await bot.send_message(message.chat.id, first_aid_instructions["ожог"], reply_markup=get_burn_keyboard())
+
+    # Обработка выбора типа ожога
+    elif text == '🔥 Термический ожог':
+        await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"], reply_markup=get_burn_keyboard())
+
+    elif text == '🧪 Химический ожог':
+        await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"], reply_markup=get_burn_keyboard())
+
+# Кнопка "Назад" возвращает к основному меню
+    elif text == '🔙 Назад':
+        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
+
+# Основные команды главного меню
+    elif text == 'Перелом':
+        await bot.send_message(message.chat.id, first_aid_instructions["перелом"], reply_markup=get_main_keyboard())
+
     elif text == 'Кровотечение':
-        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"])
+        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"], reply_markup=get_main_keyboard())
+
     elif text == 'Удушье':
-        await bot.send_message(message.chat.id, first_aid_instructions["удушье"])
+        await bot.send_message(message.chat.id, first_aid_instructions["удушье"], reply_markup=get_main_keyboard())
+
     elif text == 'Отравление':
-        await bot.send_message(message.chat.id, first_aid_instructions["отравление"])
+        await bot.send_message(message.chat.id, first_aid_instructions["отравление"], reply_markup=get_main_keyboard())
+
     elif text == 'Обморок':
-        await bot.send_message(message.chat.id, first_aid_instructions["обморок"])
+        await bot.send_message(message.chat.id, first_aid_instructions["обморок"], reply_markup=get_main_keyboard())
+
     elif text == 'ℹ️ О боте':
         about_text = """
 <b>О боте первой помощи</b>
@@ -123,9 +173,10 @@ async def handle_buttons(message):
 
 Бот создан для быстрого доступа к информации в экстренных ситуациях.
         """
-        await bot.send_message(message.chat.id, about_text, parse_mode='HTML')
+        await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard())
+
     else:
-        await bot.send_message(message.chat.id, "Пожалуйста, выберите вариант из меню ниже.")
+        await bot.send_message(message.chat.id, "Пожалуйста, выберите вариант из меню ниже.", reply_markup=get_main_keyboard())
 
 
 async def main():
@@ -136,7 +187,5 @@ async def main():
 if __name__ == '__main__':
     try:
         asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.info("Бот остановлен")
     except Exception as e:
-        logger.error(f"Произошла ошибка: {e}")
+        logger.error(f"Ошибка: {e}")
