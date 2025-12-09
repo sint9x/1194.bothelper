@@ -13,13 +13,36 @@ bot = AsyncTeleBot(BOT_TOKEN)
 first_aid_instructions = {
     "перелом": """Оказание помощи при переломе:
 
-1. Обеспечьте неподвижность поврежденной конечности
-2. Наложите шину из подручных материалов 
-3. Приложите холод к месту перелома
-4. Дайте обезболивающее, если человек находится в сознании 
-5. Вызовите скорую 
+Выберите тип перелома:""",
 
-❗️ Не вправляйте кость!""",
+    "закрытый перелом": """Оказание помощи при закрытом переломе:
+
+1. Обеспечьте полную неподвижность поврежденной конечности
+2. Наложите шину из подручных материалов (доска, палка, картон)
+3. Шина должна фиксировать два соседних сустава
+4. Приложите холод к месту перелома через ткань
+5. Дайте обезболивающее (ибупрофен, парацетамол)
+6. Вызовите скорую или доставьте в травмпункт
+
+❗️ Не пытайтесь вправлять кость!
+❗️ Не снимайте одежду и обувь!
+❗️ При переломах позвоночника не двигайте пострадавшего!""",
+
+    "открытый перелом": """Оказание помощи при открытом переломе:
+
+1. НЕ ВПРАВЛЯЙТЕ кость обратно!
+2. Остановите кровотечение (давящая повязка)
+3. Обработайте края раны антисептиком (йод, зеленка только края!)
+4. Наложите стерильную повязку на рану
+5. Зафиксируйте конечность шиной (обходя место раны)
+6. Приложите холод через повязку
+7. Дайте обезболивающее
+8. СРОЧНО вызовите скорую!
+
+❗️ При сильном кровотечении наложите жгут ВЫШЕ раны!
+❗️ Не промывайте рану водой!
+❗️ Не удаляйте осколки костей!""",
+
 
     "ожог": """Оказание помощи при ожоге:
 
@@ -88,7 +111,7 @@ first_aid_instructions = {
 }
 
 
-# Создаем основную клавиатуру
+
 def get_main_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
@@ -100,12 +123,32 @@ def get_main_keyboard():
     return markup
 
 
-# Создаем клавиатуру для выбора типа ожога
+def get_fracture_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('Закрытый перелом')
+    btn2 = types.KeyboardButton('Открытый перелом')
+    btn3 = types.KeyboardButton('Назад')
+    markup.add(btn1, btn2, btn3)
+    return markup
+
+
+
+def get_bleeding_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('Капиллярное')
+    btn2 = types.KeyboardButton('Венозное')
+    btn3 = types.KeyboardButton('Артериальное')
+    btn4 = types.KeyboardButton('Назад')
+    markup.add(btn1, btn2, btn3, btn4)
+    return markup
+
+
+
 def get_burn_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    btn1 = types.KeyboardButton('🔥 Термический ожог')
-    btn2 = types.KeyboardButton('🧪 Химический ожог')
-    btn3 = types.KeyboardButton('🔙 Назад')
+    btn1 = types.KeyboardButton('Термический ожог')
+    btn2 = types.KeyboardButton('Химический ожог')
+    btn3 = types.KeyboardButton('Назад')
     markup.add(btn1, btn2, btn3)
     return markup
 
@@ -129,28 +172,52 @@ async def send_welcome(message):
 async def handle_buttons(message):
     text = message.text
 
-    # Проверяем, находимся ли мы в режиме выбора типа ожога
     if text == 'Ожог':
         await bot.send_message(message.chat.id, first_aid_instructions["ожог"], reply_markup=get_burn_keyboard())
 
-    # Обработка выбора типа ожога
-    elif text == '🔥 Термический ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"], reply_markup=get_burn_keyboard())
-
-    elif text == '🧪 Химический ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"], reply_markup=get_burn_keyboard())
-
-# Кнопка "Назад" возвращает к основному меню
-    elif text == '🔙 Назад':
-        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
-
-# Основные команды главного меню
     elif text == 'Перелом':
-        await bot.send_message(message.chat.id, first_aid_instructions["перелом"], reply_markup=get_main_keyboard())
+        await bot.send_message(message.chat.id, first_aid_instructions["перелом"], reply_markup=get_fracture_keyboard())
 
     elif text == 'Кровотечение':
-        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"], reply_markup=get_main_keyboard())
+        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"],
+                               reply_markup=get_bleeding_keyboard())
 
+        # Подменю: Типы ожогов
+    elif text == 'Термический ожог':
+        await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"],
+                               reply_markup=get_burn_keyboard())
+
+    elif text == 'Химический ожог':
+        await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"],
+                               reply_markup=get_burn_keyboard())
+
+        # Подменю: Типы переломов
+    elif text == 'Закрытый перелом':
+        await bot.send_message(message.chat.id, first_aid_instructions["закрытый перелом"],
+                               reply_markup=get_fracture_keyboard())
+
+    elif text == 'Открытый перелом':
+        await bot.send_message(message.chat.id, first_aid_instructions["открытый перелом"],
+                               reply_markup=get_fracture_keyboard())
+
+        # Подменю: Типы кровотечений
+    elif text == 'Капиллярное':
+        await bot.send_message(message.chat.id, first_aid_instructions["капиллярное кровотечение"],
+                               reply_markup=get_bleeding_keyboard())
+
+    elif text == 'Венозное':
+        await bot.send_message(message.chat.id, first_aid_instructions["венозное кровотечение"],
+                               reply_markup=get_bleeding_keyboard())
+
+    elif text == 'Артериальное':
+        await bot.send_message(message.chat.id, first_aid_instructions["артериальное кровотечение"],
+                               reply_markup=get_bleeding_keyboard())
+
+        # Кнопка "Назад" возвращает к основному меню
+    elif text == 'Назад':
+        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
+
+        # Остальные команды главного меню (без подменю)
     elif text == 'Удушье':
         await bot.send_message(message.chat.id, first_aid_instructions["удушье"], reply_markup=get_main_keyboard())
 
@@ -159,6 +226,25 @@ async def handle_buttons(message):
 
     elif text == 'Обморок':
         await bot.send_message(message.chat.id, first_aid_instructions["обморок"], reply_markup=get_main_keyboard())
+
+    elif text == 'ℹ️ О боте':
+        about_text = """
+    <b>О боте первой помощи</b>
+
+    Этот бот предоставляет базовые инструкции по оказанию первой помощи.
+
+    <b>Важно:</b>
+    - Инструкции носят ознакомительный характер
+    - При серьезных травмах всегда вызывайте скорую помощь
+    - Пройдите профессиональные курсы первой помощи
+
+    Бот создан для быстрого доступа к информации в экстренных ситуациях.
+            """
+
+
+
+
+
 
     elif text == 'ℹ️ О боте':
         about_text = """
