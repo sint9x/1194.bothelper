@@ -43,7 +43,6 @@ first_aid_instructions = {
 ❗️ Не промывайте рану водой!
 ❗️ Не удаляйте осколки костей!""",
 
-
     "ожог": """Оказание помощи при ожоге:
 
 Выберите тип ожога:""",
@@ -73,12 +72,41 @@ first_aid_instructions = {
 
     "кровотечение": """Оказание помощи при кровотечении:
 
-1. Наложите давящую повязку
-2. Приподнимите поврежденную конечность
-3. При артериальном кровотечении наложите жгут
-4. Вызовите скорую при сильном кровотечении
+Выберите тип кровотечения:""",
 
-❗️ Под жгут положите записку со временем наложения!""",
+    # ДОБАВЛЕНО: типы кровотечений
+    "капиллярное кровотечение": """Оказание помощи при капиллярном кровотечении:
+
+1. Промойте рану чистой водой
+2. Обработайте антисептиком (перекись водорода, хлоргексидин)
+3. Наложите стерильную повязку или лейкопластырь
+4. Приложите холод для уменьшения отека
+
+❗️ Обычно останавливается самостоятельно за 5-10 минут
+❗️ При сахарном диабете заживление может быть медленнее""",
+
+    "венозное кровотечение": """Оказание помощи при венозном кровотечении:
+
+1. Наложите давящую повязку на рану
+2. Приподнимите поврежденную конечность выше уровня сердца
+3. Если кровотечение сильное - наложите жгут НИЖЕ раны
+4. Вызовите скорую помощь
+
+❗️ Кровь темно-вишневого цвета, вытекает равномерной струей
+❗️ Под жгут положите записку со временем наложения
+❗️ Жгут можно держать не более 1 часа летом и 30 минут зимой""",
+
+    "артериальное кровотечение": """Оказание помощи при артериальном кровотечении:
+
+1. Немедленно наложите жгут ВЫШЕ раны
+2. Под жгут подложите ткань и записку со временем
+3. Прижмите артерию пальцем выше раны
+4. Вызовите скорую НЕМЕДЛЕННО
+
+❗️ Кровь ярко-алая, бьет пульсирующей струей
+❗️ Опасность для жизни через 2-3 минуты!
+❗️ Жгут накладывайте только при артериальном кровотечении!
+❗️ Время наложения: лето - 1 час, зима - 30 минут""",
 
     "удушье": """Оказание помощи при удушье:
 
@@ -92,24 +120,27 @@ first_aid_instructions = {
     "отравление": """Оказание помощи при отравлении:
 
 1. Вызовите рвоту (если человек в сознании и не отравлен кислотой/щелочью)
-2. Дайте активированный уголь
-3. Обеспечьте обильное питье
+2. Дайте активированный уголь (1 таблетка на 10 кг веса)
+3. Обеспечьте обильное питье (вода, слабый чай)
 4. Вызовите скорую
 
 ❗️ Сохраните образец отравляющего вещества!
-❗️ При отравлении кислотами/щелочами НЕ вызывайте рвоту!""",
+❗️ При отравлении кислотами/щелочами НЕ вызывайте рвоту!
+❗️ При потере сознания положите на бок""",
 
     "обморок": """Оказание помощи при обмороке:
 
-1. Уложите на спину, приподнимите ноги
-2. Расстегните тесную одежду
+1. Уложите на спину, приподнимите ноги на 30-45 градусов
+2. Расстегните тесную одежду (воротник, пояс)
 3. Обеспечьте приток свежего воздуха
-4. Поднесите нашатырный спирт
-5. Вызовите скорую если не приходит в сознание
+4. Поднесите ватку с нашатырным спиртом (не ближе 10 см)
+5. Когда придет в сознание, дайте сладкий чай
+6. Вызовите скорую если не приходит в сознание более 5 минут
 
-❗️ Не бейте по щекам и не трясите!"""
+❗️ Не бейте по щекам и не трясите!
+❗️ Не давайте воду/лекарства пока человек без сознания!
+❗️ После обморока необходим покой 1-2 часа"""
 }
-
 
 
 def get_main_keyboard():
@@ -132,7 +163,6 @@ def get_fracture_keyboard():
     return markup
 
 
-
 def get_bleeding_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('Капиллярное')
@@ -141,7 +171,6 @@ def get_bleeding_keyboard():
     btn4 = types.KeyboardButton('Назад')
     markup.add(btn1, btn2, btn3, btn4)
     return markup
-
 
 
 def get_burn_keyboard():
@@ -182,7 +211,7 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"],
                                reply_markup=get_bleeding_keyboard())
 
-        # Подменю: Типы ожогов
+    # Подменю: Типы ожогов
     elif text == 'Термический ожог':
         await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"],
                                reply_markup=get_burn_keyboard())
@@ -191,7 +220,7 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"],
                                reply_markup=get_burn_keyboard())
 
-        # Подменю: Типы переломов
+    # Подменю: Типы переломов
     elif text == 'Закрытый перелом':
         await bot.send_message(message.chat.id, first_aid_instructions["закрытый перелом"],
                                reply_markup=get_fracture_keyboard())
@@ -200,7 +229,7 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, first_aid_instructions["открытый перелом"],
                                reply_markup=get_fracture_keyboard())
 
-        # Подменю: Типы кровотечений
+    # Подменю: Типы кровотечений
     elif text == 'Капиллярное':
         await bot.send_message(message.chat.id, first_aid_instructions["капиллярное кровотечение"],
                                reply_markup=get_bleeding_keyboard())
@@ -213,11 +242,7 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, first_aid_instructions["артериальное кровотечение"],
                                reply_markup=get_bleeding_keyboard())
 
-        # Кнопка "Назад" возвращает к основному меню
-    elif text == 'Назад':
-        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
-
-        # Остальные команды главного меню (без подменю)
+    # Другие основные кнопки
     elif text == 'Удушье':
         await bot.send_message(message.chat.id, first_aid_instructions["удушье"], reply_markup=get_main_keyboard())
 
@@ -226,6 +251,10 @@ async def handle_buttons(message):
 
     elif text == 'Обморок':
         await bot.send_message(message.chat.id, first_aid_instructions["обморок"], reply_markup=get_main_keyboard())
+
+    # Кнопка "Назад" возвращает к основному меню
+    elif text == 'Назад':
+        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
 
     elif text == 'ℹ️ О боте':
         about_text = """
@@ -243,16 +272,19 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard())
 
     else:
-        await bot.send_message(message.chat.id, "Пожалуйста, выберите вариант из меню ниже.", reply_markup=get_main_keyboard())
+        await bot.send_message(message.chat.id, "Пожалуйста, выберите вариант из меню ниже.",
+                               reply_markup=get_main_keyboard())
 
 
 async def main():
     logger.info("Бот запущен...")
-    await bot.polling(none_stop=True)
+    await bot.polling(none_stop=True, skip_pending=True)
 
 
 if __name__ == '__main__':
     try:
         asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Бот остановлен")
     except Exception as e:
         logger.error(f"Ошибка: {e}")
