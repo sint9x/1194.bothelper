@@ -12,11 +12,11 @@ bot = AsyncTeleBot(BOT_TOKEN)
 
 first_aid_instructions = {
 #ПЕРЕЛОМЫ
-    "перелом": """Оказание помощи при переломе:
+    "перелом": """<b>Оказание помощи при переломе</b>:
 
 Выберите раздел:""",
 
-    "закрытый перелом": """Оказание помощи при закрытом переломе:
+    "закрытый перелом": """<b>Оказание помощи при закрытом переломе</b>:
 
 1. Обеспечьте полную неподвижность поврежденной конечности
 2. Наложите шину из подручных материалов (доска, палка, картон)
@@ -27,26 +27,26 @@ first_aid_instructions = {
 ❗️ Не снимайте одежду и обувь!
 ❗️ При переломах позвоночника не двигайте пострадавшего!""",
 
-    "открытый перелом": """Оказание помощи при открытом переломе:
+    "открытый перелом": """<b>Оказание помощи при открытом переломе</b>:
 
-1. НЕ ВПРАВЛЯЙТЕ кость обратно!
+1. <b>НЕ ВПРАВЛЯЙТЕ</b> кость обратно!
 2. Остановите кровотечение (давящая повязка)
 3. Обработайте края раны антисептиком (йод, зеленка только края!)
 4. Наложите стерильную повязку на рану
 5. Зафиксируйте конечность шиной (обходя место раны)
 6. Приложите холод через повязку
 7. Дайте обезболивающее
-8. СРОЧНО вызовите скорую!
+8. <b>СРОЧНО</b> вызовите скорую!
 
-❗️ При сильном кровотечении наложите жгут ВЫШЕ раны!
+❗️ При сильном кровотечении наложите жгут <b>ВЫШЕ</b> раны!
 ❗️ Не промывайте рану водой!
 ❗️ Не удаляйте осколки костей!""",
 #ОЖОГИ
-    "ожог": """Оказание помощи при ожоге:
+    "ожог": """<b>Оказание помощи при ожоге</b>:
 
 Выберите раздел:""",
 
-    "термический ожог": """Оказание помощи при термическом ожоге:
+    "термический ожог": """<b>Оказание помощи при термическом ожоге</b>:
 
 1. Охладите место ожога проточной водой 15-20 минут
 2. Накройте стерильной повязкой
@@ -57,7 +57,7 @@ first_aid_instructions = {
 ❗️ При ожогах 3-4 степени немедленно вызывайте скорую!
 ❗ Не вскрывайте пузыри на теле""",
 
-    "химический ожог": """Оказание помощи при химическом ожоге:
+    "химический ожог": """<b>Оказание помощи при химическом ожоге</b>:
 
 1. Снимите пропитанную химикатами одежду
 2. Промывайте рану проточной водой 20-30 минут,если ожог НЕ вызван кислотой
@@ -82,7 +82,7 @@ first_aid_instructions = {
 • <b>Вид:</b> Зависит от вещества:
 • Кислота → сухой плотный струп
 • Щелочь → влажный рыхлый струп
-• <b>Боль:</b> Может появиться с ЗАПОЗДАНИЕМ
+• <b>Боль:</b> Может появиться с <b>ЗАПОЗДАНИЕМ</b>
 • <b>Первая помощь:</b> Долгое промывание водой 20-30 мин (кроме негашеной извести и концентрированной серной кислоты)""",
 
     "степени ожогов": """<b>Степени ожогов:</b>
@@ -116,7 +116,7 @@ first_aid_instructions = {
 • Ожогах лица, кистей, стоп, паха""",
 
 #КРОВОТЕЧЕНИЯ
-    "кровотечение": """Оказание помощи при кровотечении:
+    "кровотечение": """<b>Оказание помощи при кровотечении</b>:
 
 Выберите раздел:""",
   "как определить вид кровотечения": """<b>Как определить вид кровотечения:</b>
@@ -140,7 +140,7 @@ first_aid_instructions = {
 • Очень быстрое, под давлением""",
 
 
-    "капиллярное кровотечение": """Оказание помощи при капиллярном кровотечении:
+    "капиллярное кровотечение": """<b>Оказание помощи при капиллярном кровотечении</b>:
 
 1. Обработайте антисептиком (перекись водорода, хлоргексидин)
 2. Наложите стерильную повязку или лейкопластырь
@@ -149,11 +149,11 @@ first_aid_instructions = {
 ❗️ Обычно останавливается самостоятельно за 5-10 минут
 ❗️ При сахарном диабете заживление может быть медленнее""",
 
-    "венозное кровотечение": """Оказание помощи при венозном кровотечении:
+    "венозное кровотечение": """<b>Оказание помощи при венозном кровотечении</b>:
 
 1. Наложите давящую повязку на рану
 2. Приподнимите поврежденную конечность выше уровня сердца
-3. Если кровотечение сильное - наложите жгут НИЖЕ раны
+3. Если кровотечение сильное - наложите жгут <b>НИЖЕ</b> раны
 4. Вызовите скорую помощь
 
 ❗️ Кровь темно-вишневого цвета, вытекает равномерной струей
@@ -163,15 +163,15 @@ first_aid_instructions = {
     "артериальное кровотечение": """Оказание помощи при артериальном кровотечении:
 
 1. Прижмите рукой место ранения
-2. Немедленно наложите жгут ВЫШЕ раны, если повреждена сонная артерия, НИЖЕ
+2. Немедленно наложите жгут <b>ВЫШЕ</b> раны, если повреждена сонная артерия, <b>НИЖЕ</b>
 3. Под жгут подложите ткань и записку со временем
-4. Вызовите скорую НЕМЕДЛЕННО
+4. Вызовите скорую <b>НЕМЕДЛЕННО</b>
 
 ❗️ Кровь ярко-алая, бьет пульсирующей струей
 ❗️ Опасность для жизни через 2-3 минуты!
 ❗️ Время наложения: лето - 1 час, зима - 30 минут""",
 #УДУШЬЕ
-    "удушье": """Удушье:
+    "удушье": """<b>Удушье</b>:
 
 Выберите раздел:""",
   "удушье и его признаки": """<b>Удушье и его признаки:</b>
@@ -230,7 +230,7 @@ first_aid_instructions = {
 
 
 #ОТРАВЛЕНИЕ
-    "отравление": """Оказание помощи при отравлении:
+    "отравление": """<b>Оказание помощи при отравлении</b>:
 
 1. Помогите человеку прокашляться
 2. Дайте активированный уголь (1 таблетка на 10 кг веса)
@@ -240,7 +240,7 @@ first_aid_instructions = {
 ❗️ Сохраните образец отравляющего вещества!
 ❗️ При потере сознания положите на бок""",
 #ОБМОРОК
-    "обморок": """Оказание помощи при обмороке:
+    "обморок": """<b>Оказание помощи при обмороке</b>:
 1. Проверьте наличие признаков жизни 
 2. Уложите человека на спину чуть, ноги слегка вверх, голова повёрнута в бок
 3. Расстегните тесную одежду (воротник, пояс)
@@ -254,7 +254,7 @@ first_aid_instructions = {
 ❗️ После обморока необходим покой 1-2 часа""",
 
     # ОБМОРОЖЕНИЕ
-    "обморожение": """Обморожение:
+    "обморожение": """<b>Обморожение</b>:
 
 Выберите раздел:""",
 
@@ -391,24 +391,24 @@ async def handle_buttons(message):
     text = message.text
 
     if text == 'Ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["ожог"],
+        await bot.send_message(message.chat.id, first_aid_instructions["ожог"], parse_mode='HTML',
                                reply_markup=get_burn_keyboard())
 
     elif text == 'Перелом':
-        await bot.send_message(message.chat.id, first_aid_instructions["перелом"],
+        await bot.send_message(message.chat.id, first_aid_instructions["перелом"], parse_mode='HTML',
                                reply_markup=get_fracture_keyboard())
 
     elif text == 'Кровотечение':
-        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"],
+        await bot.send_message(message.chat.id, first_aid_instructions["кровотечение"], parse_mode='HTML',
                                reply_markup=get_bleeding_keyboard())
 
     # Подменю: Типы ожогов
     elif text == 'Термический ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"],
+        await bot.send_message(message.chat.id, first_aid_instructions["термический ожог"], parse_mode='HTML',
                                reply_markup=get_burn_keyboard())
 
     elif text == 'Химический ожог':
-        await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"],
+        await bot.send_message(message.chat.id, first_aid_instructions["химический ожог"], parse_mode='HTML',
                                reply_markup=get_burn_keyboard())
     elif text == 'Отличия ожогов':
         await bot.send_message(message.chat.id, first_aid_instructions["отличия ожогов"], parse_mode='HTML',
@@ -419,30 +419,30 @@ async def handle_buttons(message):
 
     # Подменю: Типы переломов
     elif text == 'Закрытый перелом':
-        await bot.send_message(message.chat.id, first_aid_instructions["закрытый перелом"],
+        await bot.send_message(message.chat.id, first_aid_instructions["закрытый перелом"], parse_mode='HTML',
                                reply_markup=get_fracture_keyboard())
 
     elif text == 'Открытый перелом':
-        await bot.send_message(message.chat.id, first_aid_instructions["открытый перелом"],
+        await bot.send_message(message.chat.id, first_aid_instructions["открытый перелом"], parse_mode='HTML',
                                reply_markup=get_fracture_keyboard())
 
     # Подменю: Типы кровотечений
     elif text == 'Капиллярное':
-        await bot.send_message(message.chat.id, first_aid_instructions["капиллярное кровотечение"],
+        await bot.send_message(message.chat.id, first_aid_instructions["капиллярное кровотечение"], parse_mode='HTML',
                                reply_markup=get_bleeding_keyboard())
 
     elif text == 'Венозное':
-        await bot.send_message(message.chat.id, first_aid_instructions["венозное кровотечение"],
+        await bot.send_message(message.chat.id, first_aid_instructions["венозное кровотечение"], parse_mode='HTML',
                                reply_markup=get_bleeding_keyboard())
 
     elif text == 'Артериальное':
-        await bot.send_message(message.chat.id, first_aid_instructions["артериальное кровотечение"],
+        await bot.send_message(message.chat.id, first_aid_instructions["артериальное кровотечение"], parse_mode='HTML',
                                reply_markup=get_bleeding_keyboard())
     elif text == 'Как определить вид':
         await bot.send_message(message.chat.id, first_aid_instructions["как определить вид кровотечения"],parse_mode='HTML', reply_markup=get_bleeding_keyboard())
     # Другие основные кнопки
     elif text == 'Удушье':
-        await bot.send_message(message.chat.id, first_aid_instructions["удушье"],
+        await bot.send_message(message.chat.id, first_aid_instructions["удушье"], parse_mode='HTML',
                                reply_markup=get_choking_keyboard())
     elif text == 'Оказание помощи при удушье':
         await bot.send_message(message.chat.id, first_aid_instructions["оказание помощи при удушье"], parse_mode='HTML',
@@ -451,19 +451,19 @@ async def handle_buttons(message):
         await bot.send_message(message.chat.id, first_aid_instructions["удушье и его признаки"], parse_mode='HTML',
                                reply_markup=get_choking_keyboard())
     elif text == 'Отравление':
-        await bot.send_message(message.chat.id, first_aid_instructions["отравление"], reply_markup=get_main_keyboard())
+         await bot.send_message(message.chat.id, first_aid_instructions["отравление"],parse_mode='HTML', reply_markup=get_main_keyboard())
 
     elif text == 'Обморок':
-        await bot.send_message(message.chat.id, first_aid_instructions["обморок"], reply_markup=get_main_keyboard())
+        await bot.send_message(message.chat.id, first_aid_instructions["обморок"], parse_mode='HTML', reply_markup=get_main_keyboard())
 
 
 
     # Кнопка "Назад" возвращает к основному меню
     elif text == 'Назад':
-        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", reply_markup=get_main_keyboard())
+        await bot.send_message(message.chat.id, "Возвращаемся в главное меню:", parse_mode='HTML', reply_markup=get_main_keyboard())
 
     elif text == 'Обморожение':
-        await bot.send_message(message.chat.id, first_aid_instructions["обморожение"],
+        await bot.send_message(message.chat.id, first_aid_instructions["обморожение"], parse_mode='HTML',
                                reply_markup=get_frostbite_keyboard())
 
     elif text == 'Оказание помощи при обморожении':
