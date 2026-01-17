@@ -550,8 +550,9 @@ def get_fracture_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     btn1 = types.KeyboardButton('Закрытый перелом')
     btn2 = types.KeyboardButton('Открытый перелом')
-    btn3 = types.KeyboardButton('Назад')
-    markup.add(btn1, btn2, btn3)
+    btn3 = types.KeyboardButton('Виды переломов')
+    btn4 = types.KeyboardButton('Назад')
+    markup.add(btn1, btn2, btn3, btn4)
     return markup
 
 #КРОВОТЕЧЕНИЕ
@@ -708,6 +709,10 @@ async def handle_buttons(message):
 
     elif text == 'Открытый перелом':
         await bot.send_message(message.chat.id, first_aid_instructions["открытый перелом"], parse_mode='HTML',
+                               reply_markup=get_fracture_keyboard())
+
+    elif text == 'Виды переломов':
+        await bot.send_message(message.chat.id, first_aid_instructions["виды переломов"], parse_mode='HTML',
                                reply_markup=get_fracture_keyboard())
 
     # Подменю: Типы кровотечений
