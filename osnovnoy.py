@@ -405,7 +405,7 @@ first_aid_instructions = {
 • <b>НЕМЕДЛЕННО</b> вызвать скорую помощь""",
 
  # ТЕПЛОВОЙ И СОЛНЕЧНЫЙ УДАР
-    "тепловой и солнечный удар": """<b>Тепловой и солнечный удар</b>:
+    "тепловой и солнечный удар": """<b>Тепловой и солнечный удары</b>:
 
 Выберите раздел:""",
 
@@ -518,7 +518,7 @@ def get_main_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     buttons = [
         'Перелом', 'Ожог', 'Кровотечение',
-        'Удушье инородным телом', 'Отравление', 'Обморок', 'Отморожение', 'Электротравмы', 'Укусы', 'Сердечно-легочная реанимация (СЛР)',
+        'Удушье инородным телом', 'Отравление', 'Обморок', 'Отморожение','Переохлаждение', 'Тепловой и солнечный удары', 'Электротравмы', 'Укусы', 'Сердечно-легочная реанимация (СЛР)',
         'ℹ️ О боте'
     ]
     markup.add(*buttons)
@@ -611,7 +611,26 @@ def get_bites_keyboard():
     btn5 = types.KeyboardButton('Назад')
     markup.add(btn1, btn2, btn3, btn4, btn5)
     return markup
-    
+
+   # ПЕРЕОХЛАЖДЕНИЕ
+def get_hypothermia_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('Помощь при переохлаждении')
+    btn2 = types.KeyboardButton('Признаки переохлаждения')
+    btn3 = types.KeyboardButton('Назад')
+    markup.add(btn1, btn2, btn3)
+    return markup
+
+# ТЕПЛОВОЙ И СОЛНЕЧНЫЙ УДАРЫ
+def get_heatstroke_keyboard():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn1 = types.KeyboardButton('Помощь при солнечном ударе')
+    btn2 = types.KeyboardButton('Помощь при тепловом ударе')
+    btn3 = types.KeyboardButton('Отличия ударов')
+    btn4 = types.KeyboardButton('Сердечно-легочная реанимация (СЛР)')
+    btn5 = types.KeyboardButton('Назад')
+    markup.add(btn2, btn1, btn3, btn4, btn5)
+    return markup
     
 @bot.message_handler(commands=['start'])
 async def send_welcome(message):
@@ -763,6 +782,34 @@ async def handle_buttons(message):
     elif text == 'Укус насекомого':
         await bot.send_message(message.chat.id, first_aid_instructions["укус насекомого"], parse_mode='HTML',
                                reply_markup=get_bites_keyboard())
+#ПЕРЕОХЛАЖДЕНИЕ
+    elif text == 'Переохлаждение':
+        await bot.send_message(message.chat.id, first_aid_instructions["переохлаждение"],
+                               parse_mode='HTML', reply_markup=get_hypothermia_keyboard())
+
+    elif text == 'Помощь при переохлаждении':
+        await bot.send_message(message.chat.id, first_aid_instructions["помощь при переохлаждении"],
+                               parse_mode='HTML', reply_markup=get_hypothermia_keyboard())
+
+    elif text == 'Признаки переохлаждения':
+        await bot.send_message(message.chat.id, first_aid_instructions["признаки переохлаждения"],
+                               parse_mode='HTML', reply_markup=get_hypothermia_keyboard())
+#ТЕПЛОВОЙ И СОЛНЕЧНЫЙ УДАРЫ
+    elif text == 'Тепловой и солнечный удары':
+        await bot.send_message(message.chat.id, first_aid_instructions["тепловой и солнечный удар"],
+                               parse_mode='HTML', reply_markup=get_heatstroke_keyboard())
+
+    elif text == 'Помощь при солнечном ударе':
+        await bot.send_message(message.chat.id, first_aid_instructions["помощь при солнечном ударе"],
+                               parse_mode='HTML', reply_markup=get_heatstroke_keyboard())
+
+    elif text == 'Помощь при тепловом ударе':
+        await bot.send_message(message.chat.id, first_aid_instructions["помощь при тепловом ударе"],
+                               parse_mode='HTML', reply_markup=get_heatstroke_keyboard())
+
+    elif text == 'Отличия ударов':
+        await bot.send_message(message.chat.id, first_aid_instructions["отличия теплового и солнечного"],
+                               parse_mode='HTML', reply_markup=get_heatstroke_keyboard())
 
 
     elif text == 'ℹ️ О боте':
