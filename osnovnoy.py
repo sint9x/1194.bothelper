@@ -850,14 +850,17 @@ async def handle_buttons(message):
 - При серьезных травмах всегда вызывайте скорую помощь!
 - Бот несет исключительно ознакомительный характер!
 
+<b>Источник информации:</b>
+Справочная информация взята из учебного пособия "Первая помощь" для лиц, оказывающих первую помощь в соответствии с Порядком оказания первой помощи (Москва, 2025).
+
 Бот создан для ознакомления с правилами оказания первой помощи пострадавшим.
-        """
+
+<i>Официальные материалы можно найти на сайте Минздрава России</i>
+                        """
         await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard())
 
-    else:
-        await bot.send_message(message.chat.id, "Пожалуйста, выберите вариант из меню ниже.",
-                               reply_markup=get_main_keyboard())
-
+        await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard(),
+                               disable_web_page_preview=False)
 
 async def main():
     logger.info("Бот запущен...")
