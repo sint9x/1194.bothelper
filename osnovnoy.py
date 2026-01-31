@@ -857,7 +857,6 @@ async def handle_buttons(message):
 
 <i>Официальные материалы можно найти на сайте Минздрава России</i>
                         """
-        await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard())
 
         await bot.send_message(message.chat.id, about_text, parse_mode='HTML', reply_markup=get_main_keyboard(),
                                disable_web_page_preview=False)
